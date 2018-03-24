@@ -20,8 +20,9 @@ public class Parser {
         parse(inputFile);
 
         //data.print();
-        edges.get(0).getNodes().print();
+        //nodes.get(0).getEdges().get(0).getList().print();
 
+        nodes.getWithId("36f483ca-98ff-4bc0-8b24-d0f95f987e76".hashCode()).unfoldAbove();
         //System.out.println(nodes.get(0).getList().hasData());
         //nodes.sortById();
         //nodes.filter(node -> node.getId() == 1421618084).print();

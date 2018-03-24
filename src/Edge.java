@@ -195,5 +195,25 @@ public class Edge {
         System.out.println();
     }
 
+    public void unfoldBelow(int dist) {
+        if (dist == 1) {
+            System.out.println(dist + " step away from the original node:\n");
+        } else {
+            System.out.println(dist + " steps away from the original node:\n");
+        }
+        print();
+        getNodes().getWithId(getTarget()).unfoldBelow(dist);
+    }
+
+    public void unfoldAbove(int dist) {
+        if (dist == 1) {
+            System.out.println(dist + " step away from the original node:\n");
+        } else {
+            System.out.println(dist + " steps away from the original node:\n");
+        }
+        print();
+        getNodes().getWithId(getSource()).unfoldAbove(dist);
+    }
+
 }
 

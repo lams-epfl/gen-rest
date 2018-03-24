@@ -79,6 +79,7 @@ public class Edges {
 
     public Edges filter(Predicate<Edge> p) {
         Edges es = new Edges();
+        es.addData(data);
         for (int i = 0; i < size(); i++) {
             if (p.test(get(i))) {
                 es.add(new Edge(null, get(i).getId(), get(i).getSource(), get(i).getTarget(), get(i).getKind(), get(i).getName(), get(i).getStereotype(), get(i).getAlignment(), get(i).getCard(), get(i).getRole()));

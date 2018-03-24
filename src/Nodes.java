@@ -41,6 +41,10 @@ public class Nodes {
         return list.get(i);
     }
 
+    public Node getWithId(int id) {
+        return filter(node -> node.getId() == id).get(0);
+    }
+
     public void add(Node n) {
         list.add(n);
         n.addList(this);
@@ -83,6 +87,7 @@ public class Nodes {
 
     public Nodes filter(Predicate<Node> p) {
         Nodes ns = new Nodes();
+        ns.addData(data);
         for (int i = 0; i < size(); i++) {
             if (p.test(get(i))) {
                 ns.add(new Node(null, get(i).getId(), get(i).getKind(), get(i).getName(), get(i).getComposite(), get(i).getStereotype(), get(i).getAlignment()));
