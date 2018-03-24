@@ -1,39 +1,52 @@
 public class Node {
 
-    private int id = 0;
+    private Nodes list = null;
+    private Integer id = null;
     private String kind = "";
     private String name = "";
     private String composite = "";
     private String stereotype = "";
-    private boolean visible = false;
+    private String alignment = "";
 
-    public Node(int id, String kind, String name, String composite, String stereotype) {
+    public Node(Nodes list, Integer id, String kind, String name, String composite, String stereotype, String alignment) {
+        this.list = list;
         this.id = id;
         this.kind = kind;
         this.name = name;
         this.composite = composite;
         this.stereotype = stereotype;
-
-        if (!kind.equals("") || !name.equals("") || !composite.equals("") || !stereotype.equals("")) {
-            this.visible = true;
-        }
-    }
-
-    public Node(int id) {
-        this(id, "", "", "", "");
-    }
-
-    public Node(int id, String kind) {
-        this(id, kind, "", "", "");
+        this.alignment = alignment;
     }
 
     public Node() {
-        this(0, "", "", "", "");
+        this(null, null, "", "", "", "", "");
     }
 
-    public int getId() {
-        return id;
+    public boolean hasList() { return list != null; }
+
+    public boolean hasId() { return id != null; }
+
+    public boolean hasKind() { return !kind.equals(""); }
+
+    public boolean hasName() {
+        return !name.equals("");
     }
+
+    public boolean hasComposite() {
+        return !composite.equals("");
+    }
+
+    public boolean hasStereotype() { return !stereotype.equals(""); }
+
+    public boolean hasAlignment() { return !alignment.equals(""); }
+
+    public boolean belongsTo(Nodes ns) {
+        return list.equals(ns);
+    }
+
+    public Nodes getList() { return list; }
+
+    public int getId() { return id; }
 
     public String getKind() {
         return kind;
@@ -47,68 +60,93 @@ public class Node {
         return composite;
     }
 
-
     public String getStereotype() {
         return stereotype;
     }
 
-    public boolean isVisible() {
-        return visible;
+    public String getAlignment() { return alignment; }
+
+    public Edges getEdges() {
+        return this.list.getData().getEdges().filter(edge -> edge.getSource() == getId() || edge.getTarget() == getId());
     }
 
-    public void addId(int id) {
-        if (this.id!=0) {
+    public void addList(Nodes ns) {
+        if (hasList()) {
+            throw new IllegalStateException("The Node already has a list.");
+        }
+        this.list = ns;
+    }
+
+    public void addId(Integer id) {
+        if (hasId()) {
             throw new IllegalStateException("The Node already has an id.");
         }
         this.id = id;
     }
 
     public void addKind(String kind) {
-        if (!this.kind.equals("")) {
+        if (hasKind()) {
             throw new IllegalStateException("The Node already has a kind.");
         }
         this.kind = kind;
-        makeVisible();
     }
 
     public void addName(String name) {
-        if (!this.name.equals("")) {
+        if (hasName()) {
             throw new IllegalStateException("The Node already has a name.");
         }
         this.name = name;
-        makeVisible();
     }
 
     public void addComposite(String composite) {
-        if (!this.composite.equals("")) {
+        if (hasComposite()) {
             throw new IllegalStateException("The Node already has a composite.");
         }
         this.composite = composite;
-        makeVisible();
     }
 
     public void addStereotype(String stereotype) {
-        if (!this.stereotype.equals("")) {
+        if (hasStereotype()) {
             throw new IllegalStateException("The Node already has a stereotype.");
         }
         this.stereotype = stereotype;
-        makeVisible();
     }
 
-    public void makeVisible() {
-        visible = true;
+    public void addAlignment(String alignment) {
+        if (hasAlignment()) {
+            throw new IllegalStateException("The Node already has a stereotype.");
+        }
+        this.alignment = alignment;
     }
 
-    public void makeInvisible() {
-        visible = false;
+    public Nodes removeList() {
+        if (!hasList()) {
+            throw new IllegalStateException("The Node has no list to remove.");
+        }
+        Nodes ns = list;
+        this.list = null;
+        return ns;
     }
 
     public void print() {
         System.out.println("Node: " + id);
-        System.out.println("Kind: " + kind);
-        System.out.println("Name: " + name);
-        System.out.println("Composite: " + composite);
-        System.out.println("Stereotype: " + stereotype + "\n");
+
+        if (hasKind()) {
+            System.out.println("Kind: " + kind);
+        }
+        if (hasName()) {
+            System.out.println("Name: " + name);
+        }
+        if (hasComposite()) {
+            System.out.println("Composite: " + composite);
+        }
+        if (hasStereotype()) {
+            System.out.println("Stereotype: " + stereotype);
+        }
+        if (hasAlignment()) {
+            System.out.println("Alignment: " + alignment);
+        }
+        System.out.println();
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 public class Nodes {
 
     private ArrayList<Node> list = new ArrayList<>();
+    private Data data = null;
 
     public Nodes(int size) {
         list = new ArrayList<>(size);
@@ -14,12 +15,35 @@ public class Nodes {
         this(0);
     }
 
+    public Data getData() {
+        return data;
+    }
+
+    public boolean hasData() { return data != null; }
+
+    public void addData(Data data) {
+        if (hasData()) {
+            throw new IllegalStateException("The list of Nodes already belongs to data.");
+        }
+        this.data = data;
+    }
+
+    public Data removeData() {
+        if (!hasData()) {
+            throw new IllegalStateException("The list of Nodes doesn't belong to data.");
+        }
+        Data d = data;
+        this.data = null;
+        return d;
+    }
+
     public Node get(int i) {
         return list.get(i);
     }
 
     public void add(Node n) {
         list.add(n);
+        n.addList(this);
     }
 
     public void addAll(Nodes ns) {
@@ -27,15 +51,14 @@ public class Nodes {
     }
 
     public Node remove(int i) {
-        return list.remove(i);
+        Node n = list.get(i);
+        list.remove(i);
+        n.removeList();
+        return n;
     }
 
     public int size() {
         return list.size();
-    }
-
-    public int visibleSize() {
-        return visibles().size();
     }
 
     public boolean isEmpty() {
@@ -51,25 +74,21 @@ public class Nodes {
     }
 
     public Nodes subList(int i1, int i2) {
-        Nodes nn = new Nodes();
+        Nodes ns = new Nodes();
         for (int i = 0; i < i2-i1; i++) {
-            nn.add(this.get(i1 + i));
+            ns.add(this.get(i1 + i));
         }
-        return nn;
+        return ns;
     }
 
     public Nodes filter(Predicate<Node> p) {
-        Nodes nn = new Nodes();
+        Nodes ns = new Nodes();
         for (int i = 0; i < size(); i++) {
             if (p.test(get(i))) {
-                nn.add(get(i));
+                ns.add(new Node(null, get(i).getId(), get(i).getKind(), get(i).getName(), get(i).getComposite(), get(i).getStereotype(), get(i).getAlignment()));
             }
         }
-        return nn;
-    }
-
-    public Nodes visibles() {
-        return filter(n -> n.isVisible());
+        return ns;
     }
 
     public void sortById() {
@@ -85,10 +104,6 @@ public class Nodes {
     }
 
     public void print() {
-        visibles().printAll();
-    }
-
-    public void printAll() {
         System.out.println("List of " + size() + " nodes: \n");
         for (int i = 0; i < this.size(); i++) {
             this.get(i).print();
