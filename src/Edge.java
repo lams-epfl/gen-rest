@@ -1,3 +1,7 @@
+/**
+ * An edge.
+ * @author Natalia Nessler
+ */
 public class Edge {
 
     private Edges list = null;
@@ -11,7 +15,30 @@ public class Edge {
     private String src_card = "";
     private String src_role = "";
 
+    /**
+     * Constructor for an edge with given parameters.
+     * @throws IllegalArgumentException if the id, the source or the target are null.
+     * @param list a list of edges this edge belongs to.
+     * @param id a unique id characterizing the edge.
+     * @param source the id of the node this edge is coming out.
+     * @param target the id of the node this edge is pointing to.
+     * @param kind
+     * @param name
+     * @param stereotype
+     * @param alignment
+     * @param src_card
+     * @param src_role
+     */
     public Edge(Edges list, Integer id, Integer source, Integer target, String kind, String name, String stereotype, String alignment, String src_card, String src_role) {
+        if (id == null) {
+            throw new IllegalArgumentException("The Edge must have an id.");
+        }
+        if (source == null) {
+            throw new IllegalArgumentException("The Edge must have a source.");
+        }
+        if (target == null) {
+            throw new IllegalArgumentException("The Edge must have a target.");
+        }
         this.list = list;
         this.id = id;
         this.source = source;
@@ -24,151 +51,264 @@ public class Edge {
         this.src_role = src_role;
     }
 
-    public Edge() {
-        this(null, null, null, null, "", "", "", "", "", "");
-    }
+    //public Edge() { this(null, null, null, null, "", "", "", "", "", ""); }
 
+    /**
+     * @return true if this edge belongs to a list of edges.
+     */
     public boolean hasList() { return list != null; }
 
+    /**
+     * @return true if this edge has an id.
+     */
     public boolean hasId() { return id != null; }
 
+    /**
+     * @return true if this edge has a source.
+     */
     public boolean hasSource() { return source != null; }
 
+    /**
+     * @return true if this edge has a target.
+     */
     public boolean hasTarget() { return target != null; }
 
+    /**
+     * @return true if this edge has a non-empty kind.
+     */
     public boolean hasKind() { return !kind.equals(""); }
 
+    /**
+     * @return true if this edge has a non-empty name.
+     */
     public boolean hasName() {
         return !name.equals("");
     }
 
+    /**
+     * @return true if this edge has a non-empty stereotype.
+     */
     public boolean hasStereotype() { return !stereotype.equals(""); }
 
+    /**
+     * @return true if this edge has a non-empty alignment.
+     */
     public boolean hasAlignment() { return !alignment.equals(""); }
 
+    /**
+     * @return true if this edge has a non-empty card.
+     */
     public boolean hasCard() {
         return !src_card.equals("");
     }
 
+    /**
+     * @return true if this edge has a non-empty role.
+     */
     public boolean hasRole() {
         return !src_role.equals("");
     }
 
+    /**
+     * @return true if this edge belongs to a given list.
+     */
     public boolean belongsTo(Edges es) {
         return list.equals(es);
     }
 
-    public Edges getList() { return list; }
+    /**
+     * @throws NullPointerException if this edge doesn't belong to a list of edges.
+     * @return the list this edge belongs to.
+     */
+    public Edges list() {
+        if (!hasList()) {
+            throw new NullPointerException("This Edge doesn't belong to a list of edges.");
+        }
+        return list; }
 
-    public int getId() { return id; }
+    /**
+     * @throws NullPointerException if this edge has no id.
+     * @return the id of this edge.
+     */
+    public int id() {
+        if (!hasId()) {
+            throw new NullPointerException("This Edge has no id.");
+        }
+        return id;
+    }
 
-    public int getSource() { return source; }
+    /**
+     * @throws NullPointerException if this edge has no source.
+     * @return the source id of this edge.
+     */
+    public int source() {
+        if (!hasSource()) {
+            throw new NullPointerException("This Edge has no source.");
+        }
+        return source;
+    }
 
-    public int getTarget() { return target; }
+    /**
+     * @throws NullPointerException if this edge has no target.
+     * @return the target id of this edge.
+     */
+    public int target() {
+        if (!hasTarget()) {
+            throw new NullPointerException("This Edge has no target.");
+        }
+        return target;
+    }
 
-    public String getKind() {
+    /**
+     * @return the kind of this edge.
+     */
+    public String kind() {
         return kind;
     }
 
-    public String getName() {
+    /**
+     * @return the name of this edge.
+     */
+    public String name() {
         return name;
     }
 
-    public String getStereotype() {
+    /**
+     * @return the stereotype of this edge.
+     */
+    public String stereotype() {
         return stereotype;
     }
 
-    public String getAlignment() { return alignment; }
+    /**
+     * @return the alignment of this edge.
+     */
+    public String alignment() { return alignment; }
 
-    public String getCard() {
+    /**
+     * @return the card of this edge.
+     */
+    public String card() {
         return src_card;
     }
 
-    public String getRole() {
+    /**
+     * @return the role of this edge.
+     */
+    public String role() {
         return src_role;
     }
 
-    public Nodes getNodes() {
-        return this.list.getData().getNodes().filter(node -> node.id() == getSource() || node.id() == getTarget());
+
+    /**
+     * @throws NullPointerException if this edge doesn't belong to a list of edges.
+     * @return the list of 2 nodes this edge connects.
+     */
+    public Nodes nodes() {
+        if (!hasList()) {
+            throw new NullPointerException("This Edge doesn't belong to a list of edges.");
+        }
+        //this Edge -> list of Edges -> Data -> list of Nodes -> filters them by source id or target id of this Edge
+        return this.list.getData().getNodes().filter(node -> node.id() == source() || node.id() == target());
     }
-    public void addList(Edges es) {
+
+    /**
+     * Makes this edge part of the given list of edges.
+     * @throws if this edge already belongs to a list of edges.
+     * @param edges the list of edges being added.
+     */
+    public void addList(Edges edges) {
         if (hasList()) {
-            throw new IllegalStateException("The Edge already has a list.");
+            throw new IllegalStateException("This Edge already belongs to a list of edges.");
         }
-        this.list = es;
+        this.list = edges;
     }
 
-    public void addId(Integer id) {
-        if (hasId()) {
-            throw new IllegalStateException("The Edge already has an id.");
-        }
-        this.id = id;
-    }
+//    /**
+//     * Adds an id to this edge. Should be done before any other action on this edge.
+//     * @throws IllegalStateException if this edge already has an id.
+//     * @param id the id being added: can be positive, negative or zero.
+//     */
+//    public void addId(Integer id) {
+//        if (hasId()) {
+//            throw new IllegalStateException("The Edge already has an id.");
+//        }
+//        this.id = id;
+//    }
+//
+//    public void addSource(Integer source) {
+//        if (hasSource()) {
+//            throw new IllegalStateException("The Edge already has a source.");
+//        }
+//        this.source = source;
+//    }
+//
+//    public void addTarget(Integer target) {
+//        if (hasTarget()) {
+//            throw new IllegalStateException("The Edge already has a target.");
+//        }
+//        this.target = target;
+//    }
+//
+//    public void addKind(String kind) {
+//        if (hasKind()) {
+//            throw new IllegalStateException("The Edge already has a kind.");
+//        }
+//        this.kind = kind;
+//    }
+//
+//    public void addName(String name) {
+//        if (hasName()) {
+//            throw new IllegalStateException("The Edge already has a name.");
+//        }
+//        this.name = name;
+//    }
+//
+//    public void addStereotype(String stereotype) {
+//        if (hasStereotype()) {
+//            throw new IllegalStateException("The Edge already has a stereotype.");
+//        }
+//        this.stereotype = stereotype;
+//    }
+//
+//    public void addAlignment(String alignment) {
+//        if (hasAlignment()) {
+//            throw new IllegalStateException("The Edge already has a stereotype.");
+//        }
+//        this.alignment = alignment;
+//    }
+//
+//    public void addCard(String src_card) {
+//        if (hasCard()) {
+//            throw new IllegalStateException("The Edge already has a card.");
+//        }
+//        this.src_card = src_card;
+//    }
+//
+//    public void addRole(String src_role) {
+//        if (hasRole()) {
+//            throw new IllegalStateException("The Edge already has a role.");
+//        }
+//        this.src_role = src_role;
+//    }
 
-    public void addSource(Integer source) {
-        if (hasSource()) {
-            throw new IllegalStateException("The Edge already has a source.");
-        }
-        this.source = source;
-    }
-
-    public void addTarget(Integer target) {
-        if (hasTarget()) {
-            throw new IllegalStateException("The Edge already has a target.");
-        }
-        this.target = target;
-    }
-
-    public void addKind(String kind) {
-        if (hasKind()) {
-            throw new IllegalStateException("The Edge already has a kind.");
-        }
-        this.kind = kind;
-    }
-
-    public void addName(String name) {
-        if (hasName()) {
-            throw new IllegalStateException("The Edge already has a name.");
-        }
-        this.name = name;
-    }
-
-    public void addStereotype(String stereotype) {
-        if (hasStereotype()) {
-            throw new IllegalStateException("The Edge already has a stereotype.");
-        }
-        this.stereotype = stereotype;
-    }
-
-    public void addAlignment(String alignment) {
-        if (hasAlignment()) {
-            throw new IllegalStateException("The Edge already has a stereotype.");
-        }
-        this.alignment = alignment;
-    }
-
-    public void addCard(String src_card) {
-        if (hasCard()) {
-            throw new IllegalStateException("The Edge already has a card.");
-        }
-        this.src_card = src_card;
-    }
-
-    public void addRole(String src_role) {
-        if (hasRole()) {
-            throw new IllegalStateException("The Edge already has a role.");
-        }
-        this.src_role = src_role;
-    }
+    /**
+     * Makes this edge forget the list of edges it belongs to.
+     * @throws IllegalStateException if this edge doesn't belong to a list of edges.
+     * @return the list of edges being removed from the node.
+     */
 
     public Edge removeList() {
         if (!hasList()) {
-            throw new IllegalStateException("The Edge already has no list to remove.");
+            throw new IllegalStateException("This Edge doesn't belong to a list of edges.");
         }
         this.list = null;
         return this;
     }
 
+    /**
+     * Prints this edge, i.e. its id, its source and target ids, and all its non-empty string parameters.
+     */
     public void print() {
         System.out.println("Edge: " + id);
         System.out.println("Source: " + source);
@@ -202,7 +342,7 @@ public class Edge {
             System.out.println(dist + " steps away from the original node:\n");
         }
         print();
-        getNodes().getWithId(getTarget()).unfoldBelow(dist);
+        nodes().getWithId(target()).unfoldBelow(dist);
     }
 
     public void unfoldAbove(int dist) {
@@ -212,7 +352,7 @@ public class Edge {
             System.out.println(dist + " steps away from the original node:\n");
         }
         print();
-        getNodes().getWithId(getSource()).unfoldAbove(dist);
+        nodes().getWithId(source()).unfoldAbove(dist);
     }
 
 }
