@@ -1150,15 +1150,15 @@ public class NodesFail extends ArrayList<Node> {
 
     public void sortById() {
         System.out.println("yo");
-        this.sort((a, b) -> a.getId() < b.getId() ? -1 : a.getId() == b.getId() ? 0 : 1);
+        this.sort((a, b) -> a.id() < b.id() ? -1 : a.id() == b.id() ? 0 : 1);
     }
 
     public void sortByKind() {
-        this.sort(Comparator.comparing(Node::getKind));
+        this.sort(Comparator.comparing(Node::kind));
     }
 
     public void sortByName() {
-        this.sort(Comparator.comparing(Node::getName));
+        this.sort(Comparator.comparing(Node::name));
     }
 
 

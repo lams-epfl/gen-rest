@@ -20,17 +20,17 @@ public class Parser {
         parse(inputFile);
 
         //data.print();
-        //nodes.get(0).getEdges().get(0).getList().print();
+        //nodes.get(0).edges().get(0).list().print();
 
         nodes.getWithId("36f483ca-98ff-4bc0-8b24-d0f95f987e76".hashCode()).unfoldAbove();
-        //System.out.println(nodes.get(0).getList().hasData());
+        //System.out.println(nodes.get(0).list().hasData());
         //nodes.sortById();
-        //nodes.filter(node -> node.getId() == 1421618084).print();
+        //nodes.filter(node -> node.id() == 1421618084).print();
         //edges.filter(node -> node.getSource()  == 1421618084).print();
         //edges.filter(node -> node.getTarget()  == 1421618084).print();
 
 
-        //nodes.filter(node -> node.getId() == "f8ef23ca-22ca-4359-91ba-ee3ff1f7bbb0".hashCode()).printAll();
+        //nodes.filter(node -> node.id() == "f8ef23ca-22ca-4359-91ba-ee3ff1f7bbb0".hashCode()).printAll();
 
     }
 

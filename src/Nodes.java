@@ -42,7 +42,7 @@ public class Nodes {
     }
 
     public Node getWithId(int id) {
-        return filter(node -> node.getId() == id).get(0);
+        return filter(node -> node.id() == id).get(0);
     }
 
     public void add(Node n) {
@@ -90,22 +90,22 @@ public class Nodes {
         ns.addData(data);
         for (int i = 0; i < size(); i++) {
             if (p.test(get(i))) {
-                ns.add(new Node(null, get(i).getId(), get(i).getKind(), get(i).getName(), get(i).getComposite(), get(i).getStereotype(), get(i).getAlignment()));
+                ns.add(new Node(null, get(i).id(), get(i).kind(), get(i).name(), get(i).composite(), get(i).stereotype(), get(i).alignment()));
             }
         }
         return ns;
     }
 
     public void sortById() {
-        list.sort(Comparator.comparing(Node::getId));
+        list.sort(Comparator.comparing(Node::id));
     }
 
     public void sortByKind() {
-        list.sort(Comparator.comparing(Node::getKind));
+        list.sort(Comparator.comparing(Node::kind));
     }
 
     public void sortByName() {
-        list.sort(Comparator.comparing(Node::getName));
+        list.sort(Comparator.comparing(Node::name));
     }
 
     public void print() {
@@ -114,10 +114,5 @@ public class Nodes {
             this.get(i).print();
         }
     }
-
-
-
-
-
 
 }

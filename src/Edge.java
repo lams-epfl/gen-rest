@@ -89,7 +89,7 @@ public class Edge {
     }
 
     public Nodes getNodes() {
-        return this.list.getData().getNodes().filter(node -> node.getId() == getSource() || node.getId() == getTarget());
+        return this.list.getData().getNodes().filter(node -> node.id() == getSource() || node.id() == getTarget());
     }
     public void addList(Edges es) {
         if (hasList()) {
