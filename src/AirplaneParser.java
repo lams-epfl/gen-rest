@@ -54,13 +54,13 @@
 //            //parseNodes(second);
 ////System.out.println(doc.getDocumentElement().getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNextSibling());
 //            parseNodes(doc.getElementsByTagName("node"));
-//            //Collections.sort(nodes, Comparator.comparing(Node::getKind));
+//            //Collections.sort(nodes, Comparator.comparing(Node::kind));
 //            //nodes.get(nodes.size()-1).print();
 //            //printing(doc.getDocumentElement());
 //            nodes.sortById();
-//            nodes.filter(node -> node.getKind().startsWith("human")).print();
+//            nodes.filter(node -> node.kind().startsWith("human")).print();
 //
-//            //nodes.filter(node -> node.getId() == "f8ef23ca-22ca-4359-91ba-ee3ff1f7bbb0".hashCode()).printAll();
+//            //nodes.filter(node -> node.id() == "f8ef23ca-22ca-4359-91ba-ee3ff1f7bbb0".hashCode()).printAll();
 //
 //        } catch (Exception e) {
 //            e.printStackTrace();

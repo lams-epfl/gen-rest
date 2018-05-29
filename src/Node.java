@@ -1,6 +1,7 @@
+import java.util.ArrayList;
+
 /**
  * A node.
- *
  * @author Natalia Nessler
  */
 
@@ -17,8 +18,8 @@ public class Node {
     /**
      * Constructor for a node with given parameters.
      *
-     * @param list a list of nodes this node belongs to
-     * @param id a unique id computed from a given string via hashCode()
+     * @param list a list of nodes this node belongs to.
+     * @param id a unique id characterizing the node.
      * @param kind
      * @param name
      * @param composite
@@ -89,6 +90,13 @@ public class Node {
     public boolean hasStereotype() { return !stereotype.equals(""); }
 
     /**
+     * Checks whether this node is an API action.
+     *
+     * @return true if this node is a POST, PUT or GET.
+     */
+    public boolean isRequest() { return hasStereotype() && (stereotype.equals("POST") || stereotype.equals("GET") || stereotype.equals("PUT")); }
+
+    /**
      * Checks whether this node has a non-empty alignment.
      *
      * @return true if this node has a non-empty alignment.
@@ -109,7 +117,7 @@ public class Node {
 
     /**
      * @throws NullPointerException if this node has no id.
-     * @throws NullPointerException if this node doesn't belong to a list.
+     * @throws NullPointerException if this node doesn't belong to a list nodes.
      * @return the list this node belongs to.
      */
     public Nodes list() {
@@ -119,6 +127,7 @@ public class Node {
         if (!hasList()) {
             throw new NullPointerException("This Node doesn't belong to a list of nodes.");
         }
+
         return list;
     }
 
@@ -201,7 +210,7 @@ public class Node {
             throw new NullPointerException("This Node doesn't belong to a list of nodes.");
         }
         //this Node -> list of Nodes -> Data -> list of Edges -> filters them by id of this Node
-        return this.list.getData().getEdges().filter(edge -> edge.getSource() == id() || edge.getTarget() == id());
+        return list().getData().getEdges().filter(edge -> edge.source() == id() || edge.target() == id());
     }
 
     /**
@@ -217,7 +226,7 @@ public class Node {
             throw new NullPointerException("This Node doesn't belong to a list of nodes.");
         }
         //this Node -> list of Nodes -> Data -> list of Edges -> filters them by source id corresponding to this Node
-        return this.list.getData().getEdges().filter(edge -> edge.getSource() == id());
+        return edges().filter(edge -> edge.nodes().source().id == id());
     }
 
     /**
@@ -233,7 +242,7 @@ public class Node {
             throw new NullPointerException("This Node doesn't belong to a list of nodes.");
         }
         //this Node -> list of Nodes -> Data -> list of Edges -> filters them by target id corresponding to this Node
-        return this.list.getData().getEdges().filter(edge -> edge.getTarget() == id());
+        return edges().filter(edge -> edge.nodes().target().id == id());
     }
 
     /**
@@ -253,9 +262,10 @@ public class Node {
 
         //runs through all the edges of this node and adds the "other" node to the returned list
         for (int i = 0; i < edges.size(); i++) {
-            Node n = (edges.get(i).getNodes().get(0).equals(this)) ? edges.get(i).getNodes().get(1) : edges.get(i).getNodes().get(0);
-            //creates a copy of the found node because the original one already belongs to a list and cannot be added to another one
-            nodes.add(new Node(null, n.id(), n.kind(), n.name(), n.composite(), n.stereotype(), n.alignment()));
+            Node n = edges.get(i).nodes().source().equals(this) ? edges.get(i).nodes().target() : edges.get(i).nodes().source();
+//            //creates a copy of the found node because the original one already belongs to a list and cannot be added to another one
+//            nodes.add(new Node(null, n.id(), n.kind(), n.name(), n.composite(), n.stereotype(), n.alignment()));
+            nodes.add(n);
         }
         return nodes;
     }
@@ -276,10 +286,12 @@ public class Node {
         Nodes nodes = new Nodes();
         //runs through all the outgoing edges of this node and adds the "other" node to the returned list
         for (int i = 0; i < edges.size(); i++) {
-            Node n = (edges.get(i).getNodes().get(0).equals(this)) ? edges.get(i).getNodes().get(1) : edges.get(i).getNodes().get(0);
+            Node n = edges.get(i).nodes().target();
             //creates a copy of the found node because the original one already belongs to a list and cannot be added to another one
-            nodes.add(new Node(null, n.id(), n.kind(), n.name(), n.composite(), n.stereotype(), n.alignment()));
+            //nodes.add(new Node(null, n.id(), n.kind(), n.name(), n.composite(), n.stereotype(), n.alignment()));
+            nodes.add(n);
         }
+
         return nodes;
     }
 
@@ -299,11 +311,22 @@ public class Node {
         Nodes nodes = new Nodes();
         //runs through all the incoming edges of this node and adds the "other" node to the returned list
         for (int i = 0; i < edges.size(); i++) {
-            Node n = (edges.get(i).getNodes().get(0).equals(this)) ? edges.get(i).getNodes().get(1) : edges.get(i).getNodes().get(0);
+            Node n = edges.get(i).nodes().source();
             //creates a copy of the found node because the original one already belongs to a list and cannot be added to another one
-            nodes.add(new Node(null, n.id(), n.kind(), n.name(), n.composite(), n.stereotype(), n.alignment()));
+            //nodes.add(new Node(null, n.id(), n.kind(), n.name(), n.composite(), n.stereotype(), n.alignment()));
+            nodes.add(n);
         }
         return nodes;
+    }
+
+
+
+    public Nodes localActions() {
+        return neighborsOut().filter(node -> node.kind().contains("localised_action"));
+    }
+
+    public Nodes requests() {
+        return neighborsOut().filter(node -> node.stereotype().contains("POST") || node.stereotype().contains("GET") || node.stereotype().contains("PUT"));
     }
 
     /**
@@ -376,10 +399,11 @@ public class Node {
         if (!hasId()) {
             throw new NullPointerException("This Node does not exist.");
         }
-        if (hasList()) {
-            throw new IllegalStateException("The Node already belongs to a list of nodes.");
+        if (!hasList()) {
+            //throw new IllegalStateException("The Node already belongs to a list of nodes.");
+            this.list = nodes;
         }
-        this.list = nodes;
+
     }
 
     /**
@@ -493,6 +517,22 @@ public class Node {
     }
 
     /**
+     *
+     * @return
+     */
+    public boolean canRequest() {
+        return !neighborsOut().filter(node -> node.isRequest()).isEmpty();
+    }
+
+    /**
+     *
+     */
+    public Node clone() {
+        return new Node(list(), id(), kind(), name(), composite(), stereotype(), alignment());
+    }
+
+
+    /**
      * Prints this node, i.e. its id and all its non-empty string parameters.
      * @throws NullPointerException if this node has no id.
      *
@@ -561,6 +601,9 @@ public class Node {
      * @param distance the number of edges until the original node to which unfoldBelow() is applied.
      */
     public void unfoldBelow(int distance) {
+        if (distance < 0) {
+            throw new IllegalArgumentException("The distance must be positive.");
+        }
         if (!hasId()) {
             throw new NullPointerException("This Node does not exist.");
         }
@@ -581,6 +624,9 @@ public class Node {
      * @param distance the number of edges until the original node to which unfoldAbove() is applied.
      */
     public void unfoldAbove(int distance) {
+        if (distance < 0) {
+            throw new IllegalArgumentException("The distance must be positive.");
+        }
         if (!hasId()) {
             throw new NullPointerException("This Node does not exist.");
         }
@@ -594,8 +640,9 @@ public class Node {
      * Prints recursively all the incoming edges, their nodes, their incoming edges, etc.
      */
     public void unfoldAbove() {
-        unfoldBelow(0);
+        unfoldAbove(0);
     }
+
 
 
 

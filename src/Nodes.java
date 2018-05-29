@@ -90,11 +90,27 @@ public class Nodes {
         ns.addData(data);
         for (int i = 0; i < size(); i++) {
             if (p.test(get(i))) {
-                ns.add(new Node(null, get(i).id(), get(i).kind(), get(i).name(), get(i).composite(), get(i).stereotype(), get(i).alignment()));
+                ns.add(get(i));
+                //ns.add(new Node(null, get(i).id(), get(i).kind(), get(i).name(), get(i).composite(), get(i).stereotype(), get(i).alignment()));
             }
         }
         return ns;
     }
+
+
+    /**
+     *
+     */
+/*    public Nodes clone() {
+        Nodes nodes = new Nodes();
+        nodes.addData(getData());
+        for (int i = 0; i < size(); i++) {
+            Node node = get(i);
+            System.out.println(node + " " + get(i));
+            nodes.add(node);
+        }
+        return nodes;
+    }*/
 
     public void sortById() {
         list.sort(Comparator.comparing(Node::id));

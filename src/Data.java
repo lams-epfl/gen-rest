@@ -26,6 +26,21 @@ public class Data {
         return edges;
     }
 
+    public Node root() {
+        if (!hasNodes()) {
+            throw new NullPointerException("The Data has no Nodes");
+        }
+        Node n = getNodes().get(0);
+        if (!n.neighborsIn().isEmpty()) {
+            throw new NullPointerException("The first Node in the list is not the root... :( At least you tried!");
+        }
+        return n;
+    }
+
+    public Nodes workingObjects() {
+        return nodes.filter(node -> node.kind().contains("working_object"));
+    }
+
     public void addNodes(Nodes nodes) {
         if (hasNodes()) {
             throw new IllegalStateException("The Data already has nodes.");

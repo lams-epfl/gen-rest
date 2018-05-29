@@ -1,3 +1,7 @@
+import com.sun.istack.internal.NotNull;
+
+import java.util.ArrayList;
+
 /**
  * An edge.
  * @author Natalia Nessler
@@ -14,6 +18,7 @@ public class Edge {
     private String alignment = "";
     private String src_card = "";
     private String src_role = "";
+    private Pair nodes = null;
 
     /**
      * Constructor for an edge with given parameters.
@@ -29,7 +34,7 @@ public class Edge {
      * @param src_card
      * @param src_role
      */
-    public Edge(Edges list, Integer id, Integer source, Integer target, String kind, String name, String stereotype, String alignment, String src_card, String src_role) {
+    public Edge(Edges list, @NotNull Integer id, @NotNull Integer source, @NotNull Integer target, String kind, String name, String stereotype, String alignment, String src_card, String src_role) {
         if (id == null) {
             throw new IllegalArgumentException("The Edge must have an id.");
         }
@@ -39,7 +44,7 @@ public class Edge {
         if (target == null) {
             throw new IllegalArgumentException("The Edge must have a target.");
         }
-        this.list = list;
+        this.list = list; // null at first, and added at the end of parsing
         this.id = id;
         this.source = source;
         this.target = target;
@@ -113,6 +118,9 @@ public class Edge {
      * @return true if this edge belongs to a given list.
      */
     public boolean belongsTo(Edges es) {
+        if (!hasList()) {
+            return false;
+        }
         return list.equals(es);
     }
 
@@ -127,35 +135,23 @@ public class Edge {
         return list; }
 
     /**
-     * @throws NullPointerException if this edge has no id.
      * @return the id of this edge.
      */
     public int id() {
-        if (!hasId()) {
-            throw new NullPointerException("This Edge has no id.");
-        }
         return id;
     }
 
     /**
-     * @throws NullPointerException if this edge has no source.
      * @return the source id of this edge.
      */
     public int source() {
-        if (!hasSource()) {
-            throw new NullPointerException("This Edge has no source.");
-        }
         return source;
     }
 
     /**
-     * @throws NullPointerException if this edge has no target.
      * @return the target id of this edge.
      */
     public int target() {
-        if (!hasTarget()) {
-            throw new NullPointerException("This Edge has no target.");
-        }
         return target;
     }
 
@@ -200,16 +196,24 @@ public class Edge {
     }
 
 
-    /**
+    /**@todo create a class of Pair
      * @throws NullPointerException if this edge doesn't belong to a list of edges.
      * @return the list of 2 nodes this edge connects.
      */
-    public Nodes nodes() {
+    /*public Nodes nodes() {
         if (!hasList()) {
             throw new NullPointerException("This Edge doesn't belong to a list of edges.");
         }
         //this Edge -> list of Edges -> Data -> list of Nodes -> filters them by source id or target id of this Edge
         return this.list.getData().getNodes().filter(node -> node.id() == source() || node.id() == target());
+    }*/
+
+    public Pair nodes() {
+        if (!hasList()) {
+            throw new NullPointerException("This Edge doesn't belong to a list of edges.");
+        }
+        //this Edge -> list of Edges -> Data -> list of Nodes -> filters them by source id or target id of this Edge
+        return nodes;
     }
 
     /**
@@ -218,10 +222,13 @@ public class Edge {
      * @param edges the list of edges being added.
      */
     public void addList(Edges edges) {
-        if (hasList()) {
-            throw new IllegalStateException("This Edge already belongs to a list of edges.");
+        if (!hasList()) {
+            //throw new IllegalStateException("This Edge already belongs to a list of edges.");
+            list = edges;
+            nodes = new Pair(list.getData().getNodes().getWithId(source), list().getData().getNodes().getWithId(target));
+
         }
-        this.list = edges;
+
     }
 
 //    /**
@@ -306,6 +313,14 @@ public class Edge {
         return this;
     }
 
+
+    /**
+     *
+     */
+    public Edge clone() {
+        return new Edge(list(), id(), source(), target(), kind(), name(), stereotype(), alignment(), card(), role());
+    }
+
     /**
      * Prints this edge, i.e. its id, its source and target ids, and all its non-empty string parameters.
      */
@@ -336,23 +351,29 @@ public class Edge {
     }
 
     public void unfoldBelow(int dist) {
+        if (dist < 0) {
+            throw new IllegalArgumentException("The distance must be positive.");
+        }
         if (dist == 1) {
             System.out.println(dist + " step away from the original node:\n");
         } else {
             System.out.println(dist + " steps away from the original node:\n");
         }
         print();
-        nodes().getWithId(target()).unfoldBelow(dist);
+        nodes().target().unfoldBelow(dist);
     }
 
     public void unfoldAbove(int dist) {
+        if (dist < 0) {
+            throw new IllegalArgumentException("The distance must be positive.");
+        }
         if (dist == 1) {
             System.out.println(dist + " step away from the original node:\n");
         } else {
             System.out.println(dist + " steps away from the original node:\n");
         }
         print();
-        nodes().getWithId(source()).unfoldAbove(dist);
+        nodes().source().unfoldAbove(dist);
     }
 
 }

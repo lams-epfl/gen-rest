@@ -82,23 +82,40 @@ public class Edges {
         es.addData(data);
         for (int i = 0; i < size(); i++) {
             if (p.test(get(i))) {
-                es.add(new Edge(null, get(i).getId(), get(i).getSource(), get(i).getTarget(), get(i).getKind(), get(i).getName(), get(i).getStereotype(), get(i).getAlignment(), get(i).getCard(), get(i).getRole()));
+                es.add(get(i));
+                //es.add(new Edge(null, get(i).id(), get(i).source(), get(i).target(), get(i).kind(), get(i).name(), get(i).stereotype(), get(i).alignment(), get(i).card(), get(i).role()));
             }
         }
         return es;
     }
 
     public void sortById() {
-        list.sort(Comparator.comparing(Edge::getId));
+        list.sort(Comparator.comparing(Edge::id));
     }
 
     public void sortByKind() {
-        list.sort(Comparator.comparing(Edge::getKind));
+        list.sort(Comparator.comparing(Edge::kind));
     }
 
     public void sortByName() {
-        list.sort(Comparator.comparing(Edge::getName));
+        list.sort(Comparator.comparing(Edge::name));
     }
+
+
+    /**
+     *
+     */
+ /*   public Edges clone() {
+        Edges edges = new Edges();
+        edges.addData(getData());
+        for (int i = 0; i < size(); i++) {
+            Edge edge = get(i);
+            System.out.println(edge + " " + get(i));
+            edges.add(edge);
+        }
+        return edges;
+    }
+*/
 
     public void print() {
         System.out.println("List of " + size() + " edges: \n");
