@@ -207,8 +207,11 @@ public class Parser {
             String tags = "";
             String paths = "";
 
+            ArrayList<String> allTags = new ArrayList<>();
+
             for (int i = 0; i < objects.size(); i++) {
                 tags = objects.get(i).name();
+                System.out.println(tags);
                 Nodes actions = objects.get(i).localActions();
                 for (int j = 0; j < actions.size(); j++) {
                     Nodes requests = actions.get(j).requests();
