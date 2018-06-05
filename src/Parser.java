@@ -207,7 +207,7 @@ public class Parser {
             String tags = "";
             String paths = "";
 
-            ArrayList<String> allTags = new ArrayList<>();
+            ArrayList<String> allTags2 = new ArrayList<>();
 
             for (int i = 0; i < objects.size(); i++) {
                 tags = objects.get(i).name();
