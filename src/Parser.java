@@ -197,15 +197,15 @@ public class Parser {
 
     public static void generateApi(File outputFile, Data data) {
         try {
-            String s = "openapi: 3.0.0" +
-                    "\nservers: []" +
-                    "\ninfo:" +
-                    "\n  version: 1.0.0" +
-                    "\n  title: %s" +
-                    "\ntags: %s" +
-                    "\npaths: %s" +
-                    "\ncomponents:" +
-                    "\n  schemas: %s";
+            String s = "openapi: 3.0.0" + line() +
+                    "servers: []" + line() +
+                    "info:" + line() +
+                    tab(1) + "version: 1.0.0" + line() +
+                    tab(1) + "title: %s" + line() +
+                    "tags: %s" + line() +
+                    "paths: %s" + line() +
+                    "components:" + line() +
+                    tab(1) + "schemas: %s";
 
             Node root = data.root();
             String title = root.name();
@@ -218,7 +218,7 @@ public class Parser {
 
             for (int i = 0; i < objects.size(); i++) {
                 tag = objects.get(i).name();
-                tags = tags + "\n  - name: " + tag;
+                tags = tags + line() + tab(1) + "- name: " + tag;
 
                 Nodes actions = objects.get(i).localActions();
                 for (int j = 0; j < actions.size(); j++) {
@@ -246,9 +246,28 @@ public class Parser {
                         String[] verbsByPath = new String[requestsByPath.length];
 
                         for (int n = 0; n < requestsByPath.length; n++) {
-                            verbsByPath[n] = "\n  " + requestsByPath[n].get(0).path() + ":";
+                            verbsByPath[n] = line() + tab(1) + requestsByPath[n].get(0).path() + ":";
                             for (int m = 0; m < requestsByPath[n].size(); m++) {
-                                verbsByPath[n] = verbsByPath[n] + "\n    " + requestsByPath[n].get(m).verb() + ":" + //verb
+                                verbsByPath[n] = verbsByPath[n] + line() +
+                                        tab(2) + requestsByPath[n].get(m).verb() + ":" + line() + //verb
+                                        tab(3) + "tags: " + line() +
+                                        tab (4) + "- " + requestsByPath[n].get(m).tags() + line() + //tag
+                                        tab (3) + "description: " + requestsByPath[n].get(m).description() + line() + //title
+                                        tab (3) + "responses: " + line() +
+                                        tab (4) + "'200':" + line() +
+                                        tab (5) + "description: request successful" + line() + //action
+                                        tab (5) + "content:" + line() +
+                                        tab (6) + "'application/json':" + line() +
+                                        tab (7) + "schema:" + line() +
+                                        tab (8) + "$ref: '#/components/schemas/%s'" + line() + //out
+                                        tab (3) + "requestBody:" + line() +
+                                        tab (4) + "content:" + line() +
+                                        tab (5) + "application/json:" + line() +
+                                        tab (6) + "schema:" + line() +
+                                        tab (7) + "$ref: '#/components/schemas/%s'" + line() +  //in
+                                        tab (4) + "required: true";
+
+                                /*verbsByPath[n] = verbsByPath[n] + "\n    " + requestsByPath[n].get(m).verb() + ":" + //verb
                                         "\n      tags: " +
                                         "\n        - " + requestsByPath[n].get(m).tags() + //tag
                                         "\n      description: " + requestsByPath[n].get(m).description() + //title
@@ -264,7 +283,7 @@ public class Parser {
                                         "\n          application/json:" +
                                         "\n            schema:" +
                                         "\n              $ref: '#/components/schemas/%s'" + //in
-                                        "\n        required: true";
+                                        "\n        required: true";*/
                                 // HOW to know whether it will be a schema or not?
                             }
                             paths = paths + verbsByPath[n];
@@ -326,6 +345,18 @@ public class Parser {
 
 
 
+    }
+
+    public static String tab(int n) {
+        String tab = "";
+        for (int i = 0; i < n; i++) {
+            tab = tab + "  ";
+        }
+        return tab;
+    }
+
+    public static String line() {
+        return "\n";
     }
 
 }
