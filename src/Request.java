@@ -1,7 +1,10 @@
+import java.util.ArrayList;
+
 public class Request {
 
     private String tags, description, in, out, path;
     private Verbs verb;
+    private ArrayList<Schema> schema;
 
     public Request() {
         tags = description = in = out = path = "";
@@ -11,8 +14,8 @@ public class Request {
     public String tags() {return tags;}
     public String description() {return description;}
     public Verbs verb() {return verb;}
-    public String in() {return in;}
-    public String out() {return out;}
+    public String in() {return transformIn();}
+    public String out() {return transformOut();}
     public String path() {return path;}
 
     public void setTags(String tags) {
@@ -71,22 +74,52 @@ public class Request {
         this.path = path;
     }
 
-    public boolean isVerb(String s) {
-        for (int i = 0; i < Verbs.values().length-1; i++) { // length-1 because the last verb is NO which is not a verb
-            if (Verbs.values()[i].toString().equals(s)) {
-                return true;
-            }
-        }
-        return false;
+    public String transformIn() {
+        return transform(in);
     }
 
+    public String transformOut() {
+        return transform(out);
+    }
+
+    public String transform(String s) {
+        String result = "";
+
+        if (s.contains("{")) {
+            String[] parsed = s.split("\\{|\\}");
+            if (parsed.length != 2) {
+                throw new IllegalArgumentException("The parameter does not satisfy the required syntax:\n" + s);
+            } else {
+                Schema sch = new Schema(parsed[0], parsed[1]);
+                schema.add(sch);
+
+                осталось правильно добавить съему в документ и посмотреть завивисомть от гет, пост и пут
+            }
+
+            for (int i = 0; i < parsed.length; i++) {
+                //result = result + parsed[i];
+                System.out.println(parsed[i]);
+            }
+        }
+
+
+
+        return result;
+    }
+
+    public String getParameters(String s) {
+        return null;
+    }
+
+
     public void print() {
-        System.out.println("Tag: " + tags +
-                "\nDescription: " + description +
+        System.out.println("Request:" +
+                "\nTag: " + tags() +
+                "\nDescription: " + description() +
                 "\nVerb: " + verb() +
-                "\nIn: " + in +
-                "\nOut: " + out +
-                "\nPath: " + path + "\n");
+                "\nIn: " + in() +
+                "\nOut: " + out() +
+                "\nPath: " + path() + "\n");
     }
 
 

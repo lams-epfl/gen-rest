@@ -34,8 +34,15 @@ public class Parser {
 
 
         generateApi(outputFile, data);
+/*
 
-
+        String[] s = nodes.getWithId("f7dac2b3-f68d-4950-bc84-a1f13e37fda6".hashCode()).name().split("\\{|\\}");
+        for (int i = 0; i < s.length; i++) {
+            System.out.println(i + " " + s[i]);
+        }
+        Schema sch = new Schema(s[0], s[1]);
+        System.out.println(sch.properties(3));
+*/
 
         //data.getEdges().get(0).nodes().print();
 
@@ -239,6 +246,7 @@ public class Parser {
                                     r.get(k).setOut(parameters.get(l).name());
                                 }
                             }
+                            r.get(k).print();
                         }
 
 
@@ -253,6 +261,7 @@ public class Parser {
                                         tab(3) + "tags: " + line() +
                                         tab (4) + "- " + requestsByPath[n].get(m).tags() + line() + //tag
                                         tab (3) + "description: " + requestsByPath[n].get(m).description() + line() + //title
+
                                         tab (3) + "responses: " + line() +
                                         tab (4) + "'200':" + line() +
                                         tab (5) + "description: request successful" + line() + //action
@@ -260,6 +269,7 @@ public class Parser {
                                         tab (6) + "'application/json':" + line() +
                                         tab (7) + "schema:" + line() +
                                         tab (8) + "$ref: '#/components/schemas/%s'" + line() + //out
+
                                         tab (3) + "requestBody:" + line() +
                                         tab (4) + "content:" + line() +
                                         tab (5) + "application/json:" + line() +
