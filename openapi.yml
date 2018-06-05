@@ -2,18 +2,24 @@ openapi: 3.0.0
 servers: []
 info:
   version: 1.0.0
-    title: Plane Maintenance
+  title: Plane Maintenance
+tags: 
+  - name: BE+
+  - name: DAWA
+  - name: ACD
+  - name: BLG
+  - name: BE
 paths: 
   /repairs:
-    POST:
+    post:
+      tags: 
+        - DAWA
       description: Create a repair request
-      tags: DAWA
       responses: 
         '200':
           description: request successful
           content:
-            '*/*':
-              type: array
+            'application/json':
               schema:
                 $ref: '#/components/schemas/%s'
       requestBody:
@@ -22,15 +28,15 @@ paths:
             schema:
               $ref: '#/components/schemas/%s'
         required: true
-    GET:
+    get:
+      tags: 
+        - DAWA
       description: Read all repair requests
-      tags: DAWA
       responses: 
         '200':
           description: request successful
           content:
-            '*/*':
-              type: array
+            'application/json':
               schema:
                 $ref: '#/components/schemas/%s'
       requestBody:
@@ -39,15 +45,15 @@ paths:
             schema:
               $ref: '#/components/schemas/%s'
         required: true
-    PUT:
+    put:
+      tags: 
+        - DAWA
       description: Update a repair request
-      tags: DAWA
       responses: 
         '200':
           description: request successful
           content:
-            '*/*':
-              type: array
+            'application/json':
               schema:
                 $ref: '#/components/schemas/%s'
       requestBody:

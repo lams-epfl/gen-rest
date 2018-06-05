@@ -38,7 +38,7 @@ public class Data {
     }
 
     public Nodes workingObjects() {
-        return nodes.filter(node -> node.kind().contains("working_object"));
+        return nodes.filter(node -> node.kind().contains("working_object") && !node.composite().equals("true"));
     }
 
     public void addNodes(Nodes nodes) {

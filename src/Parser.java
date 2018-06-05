@@ -30,7 +30,13 @@ public class Parser {
         //nodes.filter(node -> node.kind().contains("object")).print();
         //data.print();
         //data.print();
+
+
+
         generateApi(outputFile, data);
+
+
+
         //data.getEdges().get(0).nodes().print();
 
         //edges.filter(edge -> edge.hasRole()).get(0).unfoldBelow(0);
@@ -195,7 +201,8 @@ public class Parser {
                     "\nservers: []" +
                     "\ninfo:" +
                     "\n  version: 1.0.0" +
-                    "\n    title: %s" +
+                    "\n  title: %s" +
+                    "\ntags: %s" +
                     "\npaths: %s" +
                     "\ncomponents:" +
                     "\n  schemas: %s";
@@ -204,14 +211,15 @@ public class Parser {
             String title = root.name();
             Nodes objects = data.workingObjects();
 
-            String tags = "";
+            String tag = "";
             String paths = "";
+            String tags = "";
 
-            ArrayList<String> allTags2 = new ArrayList<>();
 
             for (int i = 0; i < objects.size(); i++) {
-                tags = objects.get(i).name();
-                System.out.println(tags);
+                tag = objects.get(i).name();
+                tags = tags + "\n  - name: " + tag;
+
                 Nodes actions = objects.get(i).localActions();
                 for (int j = 0; j < actions.size(); j++) {
                     Nodes requests = actions.get(j).requests();
@@ -219,7 +227,7 @@ public class Parser {
                         Requests r = new Requests(requests.size());
                         for (int k = 0; k < requests.size(); k++) {
                             r.add(new Request());
-                            r.get(k).setTags(tags);
+                            r.get(k).setTags(tag);
                             r.get(k).setDescription(requests.get(k).name());
                             r.get(k).setVerb(requests.get(k).stereotype());
                             Nodes parameters = requests.get(k).neighborsOut();
@@ -241,14 +249,14 @@ public class Parser {
                             verbsByPath[n] = "\n  " + requestsByPath[n].get(0).path() + ":";
                             for (int m = 0; m < requestsByPath[n].size(); m++) {
                                 verbsByPath[n] = verbsByPath[n] + "\n    " + requestsByPath[n].get(m).verb() + ":" + //verb
+                                        "\n      tags: " +
+                                        "\n        - " + requestsByPath[n].get(m).tags() + //tag
                                         "\n      description: " + requestsByPath[n].get(m).description() + //title
-                                        "\n      tags: " + requestsByPath[n].get(m).tags() + //tags
                                         "\n      responses: " +
                                         "\n        '200':" +
                                         "\n          description: request successful" + //action
                                         "\n          content:" +
-                                        "\n            '*/*':" +
-                                        "\n              type: array" +
+                                        "\n            'application/json':" +
                                         "\n              schema:" +
                                         "\n                $ref: '#/components/schemas/%s'" + //out
                                         "\n      requestBody:" +
@@ -276,7 +284,7 @@ public class Parser {
 //            String paths = "\n  " + level3.name().substring(8) + ":" +
 //                    "\n    %s:" + //verb
 //                    "\n      description: %s" + //title
-//                    "\n      tags: %s" + //tags
+//                    "\n      tag: %s" + //tag
 //                    "\n      responses: " +
 //                    "\n        '200':" +
 //                    "\n          description: successful %s request" + //action
@@ -304,7 +312,7 @@ public class Parser {
         OutputStreamWriter osw = new OutputStreamWriter(is);
         Writer w = new BufferedWriter(osw);
 
-        s = String.format(s, title, paths, schemas);
+        s = String.format(s, title, tags, paths, schemas);
 
         fillApi(w, s);
 
