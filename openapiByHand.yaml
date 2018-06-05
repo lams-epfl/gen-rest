@@ -1,0 +1,92 @@
+openapi: 3.0.0
+servers: []
+info:
+  version: 1.0.0
+  title: Plane maintenance
+tags:
+  - name: BE+
+  - name: DAWA
+  - name: ACD
+  - name: BLG
+  - name: BE
+paths: 
+  /repairs:
+    post:
+      tags: 
+        - DAWA
+      description: Create a repair request
+      responses: 
+        '200':
+          description: request successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Repair'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewRepair'
+        required: true
+    get:
+      tags: 
+        - DAWA
+      description: Read all repair requests
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: request successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Repair'
+    put:
+      tags: 
+        - DAWA
+      description: Update a repair request
+      responses: 
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  clientId:
+                    type: string
+                  description:
+                    type: string
+        required: true
+components:
+  schemas: 
+    NewRepair: 
+      type: object
+      properties:
+        clientId:
+          type: string
+        planeId:
+          type: string
+        date:
+          type: string
+          format: date−time
+        description:
+          type: string
+    Repair:
+      type: object 
+      properties:
+        repairId:
+          type: string
+        status:
+          type: string
+          enum:
+            - new
+            - wip
+            - done
