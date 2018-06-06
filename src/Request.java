@@ -124,9 +124,6 @@ public class Request {
             }
         }
 
-
-
-
         return result;
     }
 
@@ -213,24 +210,6 @@ public class Request {
                     result = result + Parser.line() +
                             Parser.tab(n+1) + properties[0] + ":" + type;
 
-                    /*if (!schemas.filter(schem -> schem.name().equals(properties[1])).isEmpty()) {
-                        result = result + "type: array" + Parser.line() +
-                                Parser.tab(n) + "items:" + Parser.line() +
-                                Parser.tab(n+1) + "$ref: '#/components/schemas/" + properties[1] + "'";
-                    } else if (properties[1].equals("dateTime")) {
-                        properties[1] = "string" + Parser.line() + Parser.tab(n + 1) + "format: date-time";
-                        result = result + "type: object" + Parser.line() +
-                                Parser.tab(n) + "properties:" + Parser.line() +
-                                Parser.tab(n) + properties[0] + ":" + Parser.line() +
-                                Parser.tab(n + 1) + "type: " + properties[1];
-
-
-                    } else else {
-                        result = result + "type: object" + Parser.line() +
-                                Parser.tab(n-1) + "properties:" +  Parser.line() +
-                                Parser.tab(n) + properties[0] + ":" + Parser.line() +
-                                Parser.tab(n + 1) + "type: " + properties[1];
-                    }*/
                 }
             }
         }

@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
@@ -13,58 +11,13 @@ public class Parser {
     private static Nodes nodes = new Nodes();
     private static Edges edges = new Edges();
     private static Data data = new Data(nodes, edges);
-    private static File inputFile = new File("struggle.sxm");
+    private static File inputFile = new File("input.sxm");
     private static File outputFile = new File("openapi.yml");
 
     public static void main(String[] args) {
 
         parse(inputFile);
-
-
-        //data.workingObjects().filter(node -> !node.localActions().isEmpty()).print();
-        //data.workingObjects().get(1).localActions().get(0).neighborsOut().print();
-
-        //nodes.get(21).list().getData().print();
-        //nodes.get(21).list().print();
-        //nodes.get(21).print();
-        //nodes.filter(node -> node.kind().contains("object")).print();
-        //data.print();
-        //data.print();
-
-
-
-
         generateApi(outputFile, data);
-/*
-
-        String[] s = nodes.getWithId("f7dac2b3-f68d-4950-bc84-a1f13e37fda6".hashCode()).name().split("\\{|\\}");
-        for (int i = 0; i < s.length; i++) {
-            System.out.println(i + " " + s[i]);
-        }
-        Schema sch = new Schema(s[0], s[1]);
-        System.out.println(sch.properties(3));
-*/
-
-        //data.getEdges().get(0).nodes().print();
-
-        //edges.filter(edge -> edge.hasRole()).get(0).unfoldBelow(0);
-        //data.print();
-        //nodes.get(0).edges().get(0).list().print();
-
-        //nodes.get(0).unfoldBelow();
-
-        //nodes.getWithId("36f483ca-98ff-4bc0-8b24-d0f95f987e76".hashCode()).unfoldAbove();
-        //System.out.println(nodes.get(0).list().hasData());
-        //nodes.sortById();
-        //nodes.filter(node -> node.id() == 1421618084).print();
-        //edges.filter(node -> node.source()  == 1421618084).print();
-        //edges.filter(node -> node.target()  == 1421618084).print();
-
-
-        //nodes.filter(node -> node.id() == "f8ef23ca-22ca-4359-91ba-ee3ff1f7bbb0".hashCode()).printAll();
-
-
-
     }
 
     private static void parse(File inputFile) {
@@ -74,8 +27,6 @@ public class Parser {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            //System.out.println("Root element : " + doc.getDocumentElement().getChildNodes().item(1).getNodeName());
-            //System.out.println("----------------------------");
 
             parseNodes(doc.getDocumentElement().getChildNodes().item(1).getChildNodes().item(1).getChildNodes());
             parseEdges(doc.getDocumentElement().getChildNodes().item(1).getChildNodes().item(3).getChildNodes());
@@ -248,8 +199,6 @@ public class Parser {
                                     r.get(k).setOut(parameters.get(l).name());
                                 }
                             }
-                            //r.get(k).print();
-                            //System.out.println("HERE: " + r.get(k).getParameters(0));
                         }
 
 
@@ -265,40 +214,6 @@ public class Parser {
                                         tab (4) + "- " + requestsByPath[n].get(m).tags() + line() + //tag
                                         tab (3) + "description: " + requestsByPath[n].get(m).description() +
                                         requestsByPath[n].get(m).getParameters(n+3); //title
-
-                                        /*tab (3) + "responses: " + line() +
-                                        tab (4) + "'200':" + line() +
-                                        tab (5) + "description: request successful" + line() + //action
-                                        tab (5) + "content:" + line() +
-                                        tab (6) + "application/json:" + line() +
-                                        tab (7) + "schema:" + line() +
-                                        tab (8) + "$ref: '#/components/schemas/%s'" + line() + //out
-
-                                        tab (3) + "requestBody:" + line() +
-                                        tab (4) + "content:" + line() +
-                                        tab (5) + "application/json:" + line() +
-                                        tab (6) + "schema:" + line() +
-                                        tab (7) + "$ref: '#/components/schemas/%s'" + line() +  //in
-                                        tab (4) + "required: true";
-*/
-                                /*verbsByPath[n] = verbsByPath[n] + "\n    " + requestsByPath[n].get(m).verb() + ":" + //verb
-                                        "\n      tags: " +
-                                        "\n        - " + requestsByPath[n].get(m).tags() + //tag
-                                        "\n      description: " + requestsByPath[n].get(m).description() + //title
-                                        "\n      responses: " +
-                                        "\n        '200':" +
-                                        "\n          description: request successful" + //action
-                                        "\n          content:" +
-                                        "\n            'application/json':" +
-                                        "\n              schema:" +
-                                        "\n                $ref: '#/components/schemas/%s'" + //out
-                                        "\n      requestBody:" +
-                                        "\n        content:" +
-                                        "\n          application/json:" +
-                                        "\n            schema:" +
-                                        "\n              $ref: '#/components/schemas/%s'" + //in
-                                        "\n        required: true";*/
-                                // HOW to know whether it will be a schema or not?
                             }
                             paths = paths + verbsByPath[n];
                         }
@@ -306,36 +221,6 @@ public class Parser {
 
                 }
             }
-//
-//            Node owner = root.edgesOut().get(0).nodes().target();
-//            String tag = owner.name();
-//
-//            Node create = owner.edgesOut().get(owner.edgesOut().size()-1).nodes().target();
-//            String description = create.name();
-//
-//            Node level3 = create.edgesOut().get(0).nodes().target();
-//            String paths = "\n  " + level3.name().substring(8) + ":" +
-//                    "\n    %s:" + //verb
-//                    "\n      description: %s" + //title
-//                    "\n      tag: %s" + //tag
-//                    "\n      responses: " +
-//                    "\n        '200':" +
-//                    "\n          description: successful %s request" + //action
-//                    "\n          content:" +
-//                    "\n            '*/*':" +
-//                    "\n              schema:" +
-//                    "\n                $ref: '#/components/schemas/%s'" + //out
-//                    "\n      requestBody:" +
-//                    "\n        content:" +
-//                    "\n          application/json:" +
-//                    "\n            schema:" +
-//                    "\n              $ref: '#/components/schemas/%s'" + //in
-//                    "\n        required: true";
-//
-//            Node level4 = level3.edgesOut().get(0).nodes().target();
-//            String verb = level4.name().substring(8);
-//
-//            paths = String.format(paths, verb, description, "\n        - " + tag, description, "", "");
 
             String components = "";
 

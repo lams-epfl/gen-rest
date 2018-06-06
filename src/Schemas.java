@@ -1,7 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.function.Predicate;
 
 public class Schemas {
@@ -26,11 +23,6 @@ public class Schemas {
     }
 
     public boolean isEmpty() { return list.isEmpty(); }
-
-    public void removeIf(Predicate<Schema> p) {
-        list.removeIf(p);
-    }
-
 
     public Schemas filter(Predicate<Schema> p) {
         Schemas s = new Schemas();

@@ -98,19 +98,6 @@ public class Nodes {
     }
 
 
-    /**
-     *
-     */
-/*    public Nodes clone() {
-        Nodes nodes = new Nodes();
-        nodes.addData(getData());
-        for (int i = 0; i < size(); i++) {
-            Node node = get(i);
-            System.out.println(node + " " + get(i));
-            nodes.add(node);
-        }
-        return nodes;
-    }*/
 
     public void sortById() {
         list.sort(Comparator.comparing(Node::id));
