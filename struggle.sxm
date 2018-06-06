@@ -104,7 +104,7 @@
         <alignment>selection.propertyKind.alignment.values.left</alignment>
         <kind>localised_property</kind>
         <stereotype>out</stereotype>
-        <name>Repair {\n repairId: string,\nstatus: enum\n(new,wip,done)\n}</name>
+        <name>Repair {\n repairId: string,\nstatus: enum(new,wip,done)\n}</name>
       </node>
       <node id="dbe36c02-14e2-4b6c-bea2-213ac417a6e4">
         <kind>distributed_action</kind>
@@ -132,12 +132,12 @@
       <node id="074ba37f-4e89-4938-aa89-4d5e63fdd88c">
         <kind>localised_property</kind>
         <stereotype>out</stereotype>
-        <name>array: Repair</name>
+        <name>myRequests: array(Repair)</name>
       </node>
       <node id="45e814e4-633d-487b-b01a-eafc20b0bf1a">
         <kind>localised_property</kind>
         <stereotype>in</stereotype>
-        <name>repairId: string</name>
+        <name>repairId: string, \ndescription: string\n</name>
       </node>
       <node id="c0539c0e-a77f-411d-9c4a-40fe3b6fd179">
         <kind>localised_property</kind>

@@ -44,9 +44,12 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Repair'
+                type: object
+                properties:
+                  myRequests:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Repair'
     put:
       tags: 
         - DAWA
@@ -60,7 +63,7 @@ paths:
             schema:
                 type: object
                 properties:
-                  clientId:
+                  repairId:
                     type: string
                   description:
                     type: string

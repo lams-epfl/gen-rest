@@ -15,52 +15,81 @@ paths:
       tags: 
         - DAWA
       description: Create a repair request
-      responses: 
+      responses:
         '200':
           description: request successful
           content:
-            'application/json':
+            application/json:
               schema:
-                $ref: '#/components/schemas/%s'
+                $ref: '#/components/schemas/Repair'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/%s'
+              $ref: '#/components/schemas/NewRepair'
         required: true
     get:
       tags: 
         - DAWA
       description: Read all repair requests
-      responses: 
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
         '200':
           description: request successful
           content:
-            'application/json':
+            application/json:
               schema:
-                $ref: '#/components/schemas/%s'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/%s'
-        required: true
+                type: object
+                properties:
+                  myRequests:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Repair'
     put:
       tags: 
         - DAWA
       description: Update a repair request
-      responses: 
+      responses:
         '200':
-          description: request successful
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/%s'
+          description: OK
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/%s'
+              type: object
+              properties:
+                repairId:
+                  type: string
+                description:
+                  type: string
         required: true
 components:
   schemas: 
+    Repair:
+      type: object
+      properties:
+        repairId:
+          type: string
+        status:
+          type: string
+          enum:
+            - new
+            - wip
+            - done
+    NewRepair:
+      type: object
+      properties:
+        clientId:
+          type: string
+        planeId:
+          type: string
+        date:
+          type: string
+          format: date-time
+        description:
+          type: string

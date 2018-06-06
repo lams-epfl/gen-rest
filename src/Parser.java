@@ -33,6 +33,7 @@ public class Parser {
 
 
 
+
         generateApi(outputFile, data);
 /*
 
@@ -217,6 +218,7 @@ public class Parser {
             Node root = data.root();
             String title = root.name();
             Nodes objects = data.workingObjects();
+            Schemas schemas = new Schemas();
 
             String tag = "";
             String paths = "";
@@ -233,7 +235,7 @@ public class Parser {
                     if (!requests.isEmpty()) {
                         Requests r = new Requests(requests.size());
                         for (int k = 0; k < requests.size(); k++) {
-                            r.add(new Request());
+                            r.add(new Request(schemas));
                             r.get(k).setTags(tag);
                             r.get(k).setDescription(requests.get(k).name());
                             r.get(k).setVerb(requests.get(k).stereotype());
@@ -246,7 +248,8 @@ public class Parser {
                                     r.get(k).setOut(parameters.get(l).name());
                                 }
                             }
-                            r.get(k).print();
+                            //r.get(k).print();
+                            //System.out.println("HERE: " + r.get(k).getParameters(0));
                         }
 
 
@@ -260,13 +263,14 @@ public class Parser {
                                         tab(2) + requestsByPath[n].get(m).verb() + ":" + line() + //verb
                                         tab(3) + "tags: " + line() +
                                         tab (4) + "- " + requestsByPath[n].get(m).tags() + line() + //tag
-                                        tab (3) + "description: " + requestsByPath[n].get(m).description() + line() + //title
+                                        tab (3) + "description: " + requestsByPath[n].get(m).description() +
+                                        requestsByPath[n].get(m).getParameters(n+3); //title
 
-                                        tab (3) + "responses: " + line() +
+                                        /*tab (3) + "responses: " + line() +
                                         tab (4) + "'200':" + line() +
                                         tab (5) + "description: request successful" + line() + //action
                                         tab (5) + "content:" + line() +
-                                        tab (6) + "'application/json':" + line() +
+                                        tab (6) + "application/json:" + line() +
                                         tab (7) + "schema:" + line() +
                                         tab (8) + "$ref: '#/components/schemas/%s'" + line() + //out
 
@@ -276,7 +280,7 @@ public class Parser {
                                         tab (6) + "schema:" + line() +
                                         tab (7) + "$ref: '#/components/schemas/%s'" + line() +  //in
                                         tab (4) + "required: true";
-
+*/
                                 /*verbsByPath[n] = verbsByPath[n] + "\n    " + requestsByPath[n].get(m).verb() + ":" + //verb
                                         "\n      tags: " +
                                         "\n        - " + requestsByPath[n].get(m).tags() + //tag
@@ -333,7 +337,14 @@ public class Parser {
 //
 //            paths = String.format(paths, verb, description, "\n        - " + tag, description, "", "");
 
-            String schemas = "";
+            String components = "";
+
+            for (int i = 0; i < schemas.size(); i++) {
+                components = components + line() +
+                        tab(2) + schemas.get(i).name() + ":" + line() +
+                        tab(3) + "type: object" + line() +
+                        tab(3) + "properties:" + schemas.get(i).properties(4);
+            }
 
 
 
@@ -341,7 +352,7 @@ public class Parser {
         OutputStreamWriter osw = new OutputStreamWriter(is);
         Writer w = new BufferedWriter(osw);
 
-        s = String.format(s, title, tags, paths, schemas);
+        s = String.format(s, title, tags, paths, components);
 
         fillApi(w, s);
 
