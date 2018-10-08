@@ -1,11 +1,8 @@
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EdgeTest {
+class Edge_test {
 
     @Test
     void constructor() {

@@ -6,8 +6,14 @@ public class Data {
     public Data(Nodes nodes, Edges edges) {
         this.nodes = nodes;
         this.edges = edges;
-        nodes.addData(this);
-        edges.addData(this);
+
+        if(nodes != null) {
+            nodes.addData(this);
+        }
+
+        if(edges != null) {
+            edges.addData(this);
+        }
     }
 
     public Data() {

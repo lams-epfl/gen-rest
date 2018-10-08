@@ -103,17 +103,17 @@ public class Node {
      */
     public boolean hasAlignment() { return !alignment.equals(""); }
 
-    /**
+/*    /**
      * Checks whether this node belongs to a given list of nodes.
      * @throws NullPointerException if this node has no id.
      * @return true if this node belongs to a given list of nodes.
-     */
+
     public boolean belongsTo(Nodes ns) {
         if (!hasId()) {
             throw new NullPointerException("This Node does not exist.");
         }
         return list.equals(ns);
-    }
+    }*/
 
     /**
      * @throws NullPointerException if this node has no id.
