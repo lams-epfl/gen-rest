@@ -325,6 +325,14 @@ public class Node {
         return neighborsOut().filter(node -> node.kind().contains("localised_action"));
     }
 
+    public Nodes localProperties() {
+        return neighborsOut().filter(node -> node.kind().contains("localised_property"));
+    }
+
+    public Nodes nodeComposite() {
+        return neighbors().filter(node -> node.hasComposite());
+    }
+
     public Nodes requests() {
         return neighborsOut().filter(node -> node.stereotype().contains("POST") || node.stereotype().contains("GET") || node.stereotype().contains("PUT"));
     }
