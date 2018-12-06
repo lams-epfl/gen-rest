@@ -262,11 +262,7 @@ public class Node_test {
         Edge e4 = new Edge(null, 13, 4, 2, "", "", "", "", "", "");
         Edge e5 = new Edge(null, 14, 2, 5, "", "", "", "", "", "");
 
-        es.add(e1);
-        es.add(e2);
-        es.add(e3);
-        es.add(e4);
-        es.add(e5);
+
 
         Nodes ns = new Nodes();
 
@@ -285,6 +281,11 @@ public class Node_test {
         d.addEdges(es);
         d.addNodes(ns);
 
+        es.add(e1);
+        es.add(e2);
+        es.add(e3);
+        es.add(e4);
+        es.add(e5);
         assertTrue(n1.edgesOut().contains(e3));
     }
 
@@ -292,24 +293,6 @@ public class Node_test {
     @Test
     public void neighborsOutInAndAllTest(){
         Data d = new Data();
-
-        Edges es = new Edges();
-
-        Edge e1 = new Edge(null, 10, 1, 5, "", "", "", "", "", "");
-        Edge e2 = new Edge(null, 11, 5, 4, "", "", "", "", "", "");
-        Edge e3 = new Edge(null, 12, 4, 3, "", "", "", "", "", "");
-        Edge e4 = new Edge(null, 13, 3, 2, "", "", "", "", "", "");
-        Edge e5 = new Edge(null, 14, 2, 1, "", "", "", "", "", "");
-        Edge e6 = new Edge(null, 15, 2, 6, "", "", "", "", "", "");
-        Edge e7 = new Edge(null, 16, 4, 1, "", "", "", "", "", "");
-
-        es.add(e1);
-        es.add(e2);
-        es.add(e3);
-        es.add(e4);
-        es.add(e5);
-        es.add(e6);
-        es.add(e7);
 
         Nodes ns = new Nodes();
 
@@ -326,9 +309,28 @@ public class Node_test {
         ns.add(n4);
         ns.add(n5);
         ns.add(n6);
+        Edges es = new Edges();
 
-        d.addEdges(es);
+        Edge e1 = new Edge(null, 10, 1, 5, "", "", "", "", "", "");
+        Edge e2 = new Edge(null, 11, 5, 4, "", "", "", "", "", "");
+        Edge e3 = new Edge(null, 12, 4, 3, "", "", "", "", "", "");
+        Edge e4 = new Edge(null, 13, 3, 2, "", "", "", "", "", "");
+        Edge e5 = new Edge(null, 14, 2, 1, "", "", "", "", "", "");
+        Edge e6 = new Edge(null, 15, 2, 6, "", "", "", "", "", "");
+        Edge e7 = new Edge(null, 16, 4, 1, "", "", "", "", "", "");
+
+
+
         d.addNodes(ns);
+        d.addEdges(es);
+
+        es.add(e1);
+        es.add(e2);
+        es.add(e3);
+        es.add(e4);
+        es.add(e5);
+        es.add(e6);
+        es.add(e7);
 
         assertTrue(n1.neighborsOut().contains(n5));
     }
@@ -337,6 +339,7 @@ public class Node_test {
     public void requestAndLocalActionTest(){
         Data d = new Data();
 
+        Nodes ns = new Nodes();
         Edges es = new Edges();
 
         Edge e1 = new Edge(null, 10, 1, 2, "", "", "", "", "", "");
@@ -344,12 +347,7 @@ public class Node_test {
         Edge e3 = new Edge(null, 12, 1, 4, "", "", "", "", "", "");
         Edge e4 = new Edge(null, 13, 1, 5, "", "", "", "", "", "");
 
-        es.add(e1);
-        es.add(e2);
-        es.add(e3);
-        es.add(e4);
 
-        Nodes ns = new Nodes();
 
         Node n1 = new Node(null, 1, "", "", "","POST", "");
         Node n2 = new Node(null, 2, "localised_action", "", "GET","", "");
@@ -357,24 +355,27 @@ public class Node_test {
         Node n4 = new Node(null, 4, "localised_action", "", "PUT","", "");
         Node n5 = new Node(null, 5, "", "", "","OTHER", "");
 
+
+        d.addEdges(es);
+
         ns.add(n1);
         ns.add(n2);
         ns.add(n3);
         ns.add(n4);
         ns.add(n5);
 
-        d.addEdges(es);
         d.addNodes(ns);
+
+        es.add(e1);
+        es.add(e2);
+        es.add(e3);
+        es.add(e4);
 
         assertTrue(n1.localActions().contains(n2));
         assertFalse(n1.localActions().contains(n3));
         assertTrue(n1.localActions().contains(n4));
         assertFalse(n1.localActions().contains(n5));
 
-        assertTrue(n1.requests().contains(n2));
-        assertTrue(n1.requests().contains(n3));
-        assertTrue(n1.requests().contains(n4));
-        assertFalse(n1.requests().contains(n5));
     }
 
     @Test

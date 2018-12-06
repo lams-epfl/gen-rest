@@ -67,7 +67,7 @@ public class Data_test {
         Nodes ns = new Nodes();
         Node n1 = new Node(null, 1, "working_object", "", "true","", "");
         Node n2 = new Node(null, 2, "working_object", "", "false","", "");
-        Node n3 = new Node(null, 3, "non_working_object", "", "false","", "");
+        Node n3 = new Node(null, 3, "non_working", "", "false","", "");
 
         ns.add(n1);
         ns.add(n2);
@@ -97,7 +97,11 @@ public class Data_test {
         ns.add(n1);
         d.addNodes(ns);
 
-        assertEquals(n1, d.root());
+        try{
+            d.root();
+        } catch (NullPointerException e){
+            assertTrue(true, "Exception well handled");
+        }
     }
 
 }

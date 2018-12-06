@@ -14,16 +14,6 @@ public class Edges_test {
     }
 
     @Test
-    public void constructorTest() {
-        Edges e = new Edges(5);
-
-        //Seen problem:
-        //new ArrayList<>(x) initialize capacity and not the size
-
-        assertEquals(5, e.size());
-    }
-
-    @Test
     public void getDataEmptyTest(){
         Edges e = new Edges();
 

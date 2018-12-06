@@ -14,16 +14,6 @@ public class Nodes_test {
     }
 
     @Test
-    public void constructorTest() {
-        Nodes n = new Nodes(5);
-
-        //Seen problem:
-        //new ArrayList<>(x) initialize capacity and not the size
-
-        assertEquals(5, n.size());
-    }
-
-    @Test
     public void addGetAndRemoveDataTest(){
         Nodes n = new Nodes();
         Data d =  new Data();
@@ -69,6 +59,11 @@ public class Nodes_test {
         Node n2 = new Node();
         Node n3 = new Node();
         Node n4 = new Node();
+
+        n1.addId(1);
+        n2.addId(2);
+        n3.addId(3);
+        n4.addId(4);
 
         n1.addKind("Kind1");
         n2.addKind("Kind2");

@@ -96,48 +96,37 @@ public class Parser {
 
 
                 if (eElement.hasAttributes()) {
-                    //edge.addId(eElement.getAttributes().item(0).getNodeValue().hashCode());
                     id = eElement.getAttributes().item(0).getNodeValue().hashCode();
                 }
 
                 NodeList children = eElement.getChildNodes();
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i).getNodeName().equals("source")) {
-                        //edge.addSource(children.item(i).getAttributes().item(0).getNodeValue().hashCode());
                         source = children.item(i).getAttributes().item(0).getNodeValue().hashCode();
                     }
                     if (children.item(i).getNodeName().equals("target")) {
-                        //edge.addTarget(children.item(i).getAttributes().item(0).getNodeValue().hashCode());
                         target = children.item(i).getAttributes().item(0).getNodeValue().hashCode();
                     }
                     if (children.item(i).getNodeName().equals("kind")) {
-                        //edge.addKind(children.item(i).getTextContent());
                         kind = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("name")) {
-                        //edge.addName(children.item(i).getTextContent());
                         name = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("stereotype")) {
-                        //edge.addStereotype(children.item(i).getTextContent());
                         stereotype = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("alignment")) {
-                        //edge.addAlignment(children.item(i).getTextContent());
                         alignment = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("src_card")) {
-                        //edge.addCard(children.item(i).getTextContent());
                         src_card = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("src_role")) {
-                        //edge.addRole(children.item(i).getTextContent());
                         src_role = children.item(i).getTextContent();
                     }
 
                 }
-                //edges.add(edge);
-
                 edges.add(new Edge(null, id, source, target, kind, name, stereotype, alignment, src_card, src_role));
             }
         }

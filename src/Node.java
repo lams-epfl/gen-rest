@@ -226,7 +226,8 @@ public class Node {
             throw new NullPointerException("This Node doesn't belong to a list of nodes.");
         }
         //this Node -> list of Nodes -> Data -> list of Edges -> filters them by source id corresponding to this Node
-        return edges().filter(edge -> edge.nodes().source().id == id());
+        Edges e = edges();
+        return e.filter(edge -> edge.nodes().source().id == id());
     }
 
     /**

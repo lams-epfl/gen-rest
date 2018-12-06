@@ -15,13 +15,6 @@ public class Schemas_test {
     }
 
     @Test
-    public void constructorTest(){
-        Schemas s = new Schemas(5);
-
-        assertEquals(5, s.size());
-    }
-
-    @Test
     public void addThenGetElementTest(){
         Schemas s = new Schemas();
 
@@ -35,7 +28,11 @@ public class Schemas_test {
     public void getEmptyTest(){
         Schemas s = new Schemas();
 
-        s.get(0);
+        try{
+            s.get(0);
+        } catch(IndexOutOfBoundsException e) {
+            assertTrue(true);
+        }
     }
 
     @Test

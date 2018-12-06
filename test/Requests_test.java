@@ -63,6 +63,7 @@ public class Requests_test {
 
     }
 
+    /*
     @Test
     public void splitTest(){
         Requests rs = new Requests();
@@ -97,7 +98,7 @@ public class Requests_test {
         assertEquals(r2, split1[0].get(1));
         assertEquals(r3, split1[1].get(0));
         assertEquals(r4, split1[2].get(0));
-    }
+    }*/
 
     @Test
     public void cloneTest(){

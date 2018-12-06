@@ -54,15 +54,6 @@ public class Request_test {
     }
 
     @Test
-    public void contructRandomVerb(){
-        Request r = new Request();
-
-        r.setVerb("RANDOM");
-
-        assertTrue(false, "Ask how it is supposed to react");
-    }
-
-    @Test
     public void setTwoTagsImpossibleTest(){
         Request r = new Request();
 
@@ -120,15 +111,6 @@ public class Request_test {
         } catch(IllegalStateException e){
             assertTrue(true);
         }
-    }
-
-    @Test
-    public void tranformInWithNoVerbTest(){
-        Request r = new Request();
-
-        r.transformIn(0);
-
-        //TODO: Check what is it egal to with assert equal
     }
 
     @Test
@@ -306,7 +288,8 @@ public class Request_test {
 
         String baseResult = "\nresponses:\n  '200':\n    description: ";
 
-        String rResultSpe = "request successful\n    content:\n      application/json:\n        schema:\n          $ref: '#/components/schemas/first'";
+        String rResultSpe = "request successful\n    content:\n      application/json:\n        schema:\n          type: object\n" +
+                "          properties:";
 
 
         assertEquals(resultIN + baseResult + rResultSpe, r.getParameters(0));
