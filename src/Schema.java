@@ -12,7 +12,6 @@ public class Schema {
 
     public String properties(int n) {
         String result = "";
-
         String[] p = properties.split(", \\\\n|,\\\\n|, | \\\\n|\\\\n |\\\\n");
 
         for (int i = 0; i < p.length; i++) {
@@ -46,6 +45,7 @@ public class Schema {
                             Parser.tab(n + 1) + "type: " + type;
                 }
             }
+
         }
 
         return result;

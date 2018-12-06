@@ -225,79 +225,15 @@ public class Edge {
         if (!hasList()) {
             //throw new IllegalStateException("This Edge already belongs to a list of edges.");
             list = edges;
-            nodes = new Pair(list.getData().getNodes().getWithId(source), list().getData().getNodes().getWithId(target));
-
+            if (list.getData() != null){
+                if(list.getData().getNodes() != null){
+                    nodes = new Pair(list.getData().getNodes().getWithId(source), list.getData().getNodes().getWithId(target));
+                }
+            }
         }
 
     }
 
-//    /**
-//     * Adds an id to this edge. Should be done before any other action on this edge.
-//     * @throws IllegalStateException if this edge already has an id.
-//     * @param id the id being added: can be positive, negative or zero.
-//     */
-//    public void addId(Integer id) {
-//        if (hasId()) {
-//            throw new IllegalStateException("The Edge already has an id.");
-//        }
-//        this.id = id;
-//    }
-//
-//    public void addSource(Integer source) {
-//        if (hasSource()) {
-//            throw new IllegalStateException("The Edge already has a source.");
-//        }
-//        this.source = source;
-//    }
-//
-//    public void addTarget(Integer target) {
-//        if (hasTarget()) {
-//            throw new IllegalStateException("The Edge already has a target.");
-//        }
-//        this.target = target;
-//    }
-//
-//    public void addKind(String kind) {
-//        if (hasKind()) {
-//            throw new IllegalStateException("The Edge already has a kind.");
-//        }
-//        this.kind = kind;
-//    }
-//
-//    public void addName(String name) {
-//        if (hasName()) {
-//            throw new IllegalStateException("The Edge already has a name.");
-//        }
-//        this.name = name;
-//    }
-//
-//    public void addStereotype(String stereotype) {
-//        if (hasStereotype()) {
-//            throw new IllegalStateException("The Edge already has a stereotype.");
-//        }
-//        this.stereotype = stereotype;
-//    }
-//
-//    public void addAlignment(String alignment) {
-//        if (hasAlignment()) {
-//            throw new IllegalStateException("The Edge already has a stereotype.");
-//        }
-//        this.alignment = alignment;
-//    }
-//
-//    public void addCard(String src_card) {
-//        if (hasCard()) {
-//            throw new IllegalStateException("The Edge already has a card.");
-//        }
-//        this.src_card = src_card;
-//    }
-//
-//    public void addRole(String src_role) {
-//        if (hasRole()) {
-//            throw new IllegalStateException("The Edge already has a role.");
-//        }
-//        this.src_role = src_role;
-//    }
 
     /**
      * Makes this edge forget the list of edges it belongs to.

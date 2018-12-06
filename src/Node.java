@@ -103,17 +103,17 @@ public class Node {
      */
     public boolean hasAlignment() { return !alignment.equals(""); }
 
-    /**
+/*    /**
      * Checks whether this node belongs to a given list of nodes.
      * @throws NullPointerException if this node has no id.
      * @return true if this node belongs to a given list of nodes.
-     */
+
     public boolean belongsTo(Nodes ns) {
         if (!hasId()) {
             throw new NullPointerException("This Node does not exist.");
         }
         return list.equals(ns);
-    }
+    }*/
 
     /**
      * @throws NullPointerException if this node has no id.
@@ -226,7 +226,8 @@ public class Node {
             throw new NullPointerException("This Node doesn't belong to a list of nodes.");
         }
         //this Node -> list of Nodes -> Data -> list of Edges -> filters them by source id corresponding to this Node
-        return edges().filter(edge -> edge.nodes().source().id == id());
+        Edges e = edges();
+        return e.filter(edge -> edge.nodes().source().id == id());
     }
 
     /**
@@ -323,6 +324,14 @@ public class Node {
 
     public Nodes localActions() {
         return neighborsOut().filter(node -> node.kind().contains("localised_action"));
+    }
+
+    public Nodes localProperties() {
+        return neighborsOut().filter(node -> node.kind().contains("localised_property"));
+    }
+
+    public Nodes nodeComposite() {
+        return neighbors().filter(node -> node.hasComposite());
     }
 
     public Nodes requests() {

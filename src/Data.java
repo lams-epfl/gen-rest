@@ -6,8 +6,14 @@ public class Data {
     public Data(Nodes nodes, Edges edges) {
         this.nodes = nodes;
         this.edges = edges;
-        nodes.addData(this);
-        edges.addData(this);
+
+        if(nodes != null) {
+            nodes.addData(this);
+        }
+
+        if(edges != null) {
+            edges.addData(this);
+        }
     }
 
     public Data() {
@@ -46,6 +52,7 @@ public class Data {
             throw new IllegalStateException("The Data already has nodes.");
         }
         this.nodes = nodes;
+        nodes.addData(this);
     }
 
     public void addEdges(Edges edges) {
@@ -53,6 +60,7 @@ public class Data {
             throw new IllegalStateException("The Data already has edges.");
         }
         this.edges = edges;
+        edges.addData(this);
     }
 
     public Nodes removeNodes() {

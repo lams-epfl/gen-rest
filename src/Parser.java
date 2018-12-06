@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
@@ -94,47 +96,37 @@ public class Parser {
 
 
                 if (eElement.hasAttributes()) {
-                    //edge.addId(eElement.getAttributes().item(0).getNodeValue().hashCode());
                     id = eElement.getAttributes().item(0).getNodeValue().hashCode();
                 }
 
                 NodeList children = eElement.getChildNodes();
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i).getNodeName().equals("source")) {
-                        //edge.addSource(children.item(i).getAttributes().item(0).getNodeValue().hashCode());
                         source = children.item(i).getAttributes().item(0).getNodeValue().hashCode();
                     }
                     if (children.item(i).getNodeName().equals("target")) {
-                        //edge.addTarget(children.item(i).getAttributes().item(0).getNodeValue().hashCode());
                         target = children.item(i).getAttributes().item(0).getNodeValue().hashCode();
                     }
                     if (children.item(i).getNodeName().equals("kind")) {
-                        //edge.addKind(children.item(i).getTextContent());
                         kind = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("name")) {
-                        //edge.addName(children.item(i).getTextContent());
                         name = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("stereotype")) {
-                        //edge.addStereotype(children.item(i).getTextContent());
                         stereotype = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("alignment")) {
-                        //edge.addAlignment(children.item(i).getTextContent());
                         alignment = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("src_card")) {
-                        //edge.addCard(children.item(i).getTextContent());
                         src_card = children.item(i).getTextContent();
                     }
                     if (children.item(i).getNodeName().equals("src_role")) {
-                        //edge.addRole(children.item(i).getTextContent());
                         src_role = children.item(i).getTextContent();
                     }
 
                 }
-                //edges.add(edge);
                 edges.add(new Edge(null, id, source, target, kind, name, stereotype, alignment, src_card, src_role));
             }
         }
@@ -153,7 +145,6 @@ public class Parser {
     }
 
 
-
     public static void generateApi(File outputFile, Data data) {
         try {
             String s = "openapi: 3.0.0" + line() +
@@ -162,6 +153,7 @@ public class Parser {
                     tab(1) + "version: 1.0.0" + line() +
                     tab(1) + "title: %s" + line() +
                     "tags: %s" + line() +
+                    "dependencies: %s" + line() +
                     "paths: %s" + line() +
                     "components:" + line() +
                     tab(1) + "schemas: %s";
@@ -171,9 +163,16 @@ public class Parser {
             Nodes objects = data.workingObjects();
             Schemas schemas = new Schemas();
 
+            List<String> listOfTags = new ArrayList<>();
+
             String tag = "";
             String paths = "";
             String tags = "";
+            String dependencies = "";
+
+            for (int i = 0; i < objects.size(); i++) {
+                listOfTags.add(objects.get(i).name());
+            }
 
 
             for (int i = 0; i < objects.size(); i++) {
@@ -211,15 +210,43 @@ public class Parser {
                                 verbsByPath[n] = verbsByPath[n] + line() +
                                         tab(2) + requestsByPath[n].get(m).verb() + ":" + line() + //verb
                                         tab(3) + "tags: " + line() +
-                                        tab (4) + "- " + requestsByPath[n].get(m).tags() + line() + //tag
-                                        tab (3) + "description: " + requestsByPath[n].get(m).description() +
-                                        requestsByPath[n].get(m).getParameters(n+3); //title
+                                        tab(4) + "- " + requestsByPath[n].get(m).tags() + line() + //tag
+                                        tab(3) + "description: " + requestsByPath[n].get(m).description() +
+                                        requestsByPath[n].get(m).getParameters(n + 3); //title
                             }
                             paths = paths + verbsByPath[n];
                         }
                     }
-
                 }
+
+                Nodes locProp = objects.get(i).localProperties();
+                Nodes composites = objects.get(i).nodeComposite();
+                String dep = "";
+                if (!locProp.isEmpty() || !composites.isEmpty()) {
+                    dep = line() + tab(1)
+                            + tag + ":"
+                            + line();
+
+                    if(!composites.isEmpty()){
+                        for (int k = 0; k < composites.size(); k++) {
+                            if(!composites.get(k).name().equals(tag) && listOfTags.contains(composites.get(k).name())){
+                                dep = dep + tab(2) + "name: "
+                                        + composites.get(k).name()
+                                        +  line();
+                            }
+                        }
+                    }
+
+                    if(!locProp.isEmpty()){
+                        for (int k = 0; k < locProp.size(); k++) {
+                            dep = dep + tab(2) + "localised_properties: "
+                                    + locProp.get(k).name()
+                                    + ((k == locProp.size() - 1) ? "" : line());
+                        }
+                    }
+                }
+                dependencies = dependencies + dep;
+
             }
 
             String components = "";
@@ -232,23 +259,21 @@ public class Parser {
             }
 
 
-
             FileOutputStream is = new FileOutputStream(outputFile);
-        OutputStreamWriter osw = new OutputStreamWriter(is);
-        Writer w = new BufferedWriter(osw);
+            OutputStreamWriter osw = new OutputStreamWriter(is);
+            Writer w = new BufferedWriter(osw);
 
-        s = String.format(s, title, tags, paths, components);
+            s = String.format(s, title, tags, dependencies, paths, components);
 
-        fillApi(w, s);
-
-
-        w.close();
+            fillApi(w, s);
 
 
-    } catch (IOException e) {
-        System.err.println("Problem writing to the file " + outputFile.getName());
-    }
+            w.close();
 
+
+        } catch (IOException e) {
+            System.err.println("Problem writing to the file " + outputFile.getName());
+        }
 
 
     }
