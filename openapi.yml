@@ -9,20 +9,6 @@ tags:
   - name: ACD
   - name: BLG
   - name: BE
-dependencies: 
-  BE+:
-    localised_properties: Repair case
-  DAWA:
-    localised_properties: Airplane
-  ACD:
-    name: BE+
-    localised_properties: Technician's\nappointment
-  BLG:
-    name: BE+
-    localised_properties: Diagnostics
-  BE:
-    name: BE+
-    localised_properties: Part Delivery
 paths: 
   /repairs:
     post:

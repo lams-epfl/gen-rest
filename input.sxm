@@ -8,7 +8,7 @@
         <composite>true</composite>
       </node>
       <node id="21b9ac9a-ccb7-4d0e-bc6c-2868b957b377">
-        <kind>distributed_action</kind>3
+        <kind>distributed_action</kind>
         <stereotype>behaviour</stereotype>
       </node>
       <node id="3d9c73b6-20ae-4cb3-bf3f-8d931ca10eb8">
