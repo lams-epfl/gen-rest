@@ -3,30 +3,31 @@ servers: []
 info:
   version: 1.0.0
   title: Plane Maintenance
-tags: 
+tags:
   - name: BE+
   - name: DAWA
   - name: ACD
   - name: BLG
   - name: BE
-dependencies: 
-  BE+:
-    localised_properties: Repair case
-  DAWA:
-    localised_properties: Airplane
+dependencies:
   ACD:
-    name: BE+
-    localised_properties: Technician's\nappointment
+    - name: BE+
+    - localised_properties: Technician's appointment
   BLG:
-    name: BE+
-    localised_properties: Diagnostics
+    - name: BE+
+    - localised_properties: Engine
+    - localised_properties: Diagnostics
   BE:
-    name: BE+
-    localised_properties: Part Delivery
-paths: 
+    - name: BE+
+    - localised_properties: Part delivery
+  BE+:
+    - localised_properties: Repair case
+  DAWA:
+    - localised_properties: Airplane
+paths:
   /repairs:
     post:
-      tags: 
+      tags:
         - DAWA
       description: Create a repair request
       responses:
@@ -43,7 +44,7 @@ paths:
               $ref: '#/components/schemas/NewRepair'
         required: true
     get:
-      tags: 
+      tags:
         - DAWA
       description: Read all repair requests
       parameters:
@@ -65,7 +66,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/Repair'
     put:
-      tags: 
+      tags:
         - DAWA
       description: Update a repair request
       responses:
@@ -83,7 +84,7 @@ paths:
                   type: string
         required: true
 components:
-  schemas: 
+  schemas:
     Repair:
       type: object
       properties:
